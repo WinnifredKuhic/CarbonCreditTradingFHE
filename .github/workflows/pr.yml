@@ -1,0 +1,155 @@
+name: Pull Request Checks
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches:
+      - main
+      - develop
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  validate:
+    name: Validate PR
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check for breaking changes
+        run: |
+          echo "Checking for breaking changes..."
+          git diff origin/${{ github.base_ref }}...HEAD --name-only
+
+      - name: Lint Solidity files
+        run: npm run lint:sol
+        continue-on-error: true
+
+      - name: Compile contracts
+        run: npm run compile
+
+      - name: Run tests
+        run: npm run test
+
+      - name: Generate coverage
+        run: npm run test:coverage
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage/lcov.info
+          flags: pr-tests
+          name: pr-coverage
+
+      - name: Comment PR with results
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            let coverageData = 'Coverage report not available';
+
+            try {
+              if (fs.existsSync('./coverage/coverage-summary.json')) {
+                const summary = JSON.parse(fs.readFileSync('./coverage/coverage-summary.json', 'utf8'));
+                const total = summary.total;
+                coverageData = `
+                ## Coverage Summary
+                - Lines: ${total.lines.pct}%
+                - Statements: ${total.statements.pct}%
+                - Functions: ${total.functions.pct}%
+                - Branches: ${total.branches.pct}%
+                `;
+              }
+            } catch (error) {
+              console.log('Could not read coverage data');
+            }
+
+            const comment = `
+            ## PR Check Results ✅
+
+            **Tests**: Passed
+            **Compilation**: Success
+            **Linting**: Checked
+
+            ${coverageData}
+
+            ---
+            *Automated check from CI/CD pipeline*
+            `;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+
+  size-check:
+    name: Contract Size Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Compile contracts
+        run: npm run compile
+
+      - name: Check contract sizes
+        run: |
+          echo "## Contract Sizes" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Contract | Size (KB) | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|----------|-----------|--------|" >> $GITHUB_STEP_SUMMARY
+
+          for file in artifacts/contracts/**/*.json; do
+            if [[ ! "$file" =~ ".dbg.json" ]]; then
+              size=$(stat -f%z "$file" 2>/dev/null || stat -c%s "$file" 2>/dev/null)
+              size_kb=$((size / 1024))
+              name=$(basename "$file" .json)
+              status="✅"
+              if [ $size_kb -gt 24 ]; then
+                status="⚠️ Large"
+              fi
+              echo "| $name | $size_kb KB | $status |" >> $GITHUB_STEP_SUMMARY
+            fi
+          done
+
+  dependency-review:
+    name: Dependency Review
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Dependency Review
+        uses: actions/dependency-review-action@v4
+        with:
+          fail-on-severity: moderate
