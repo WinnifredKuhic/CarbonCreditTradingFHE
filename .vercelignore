@@ -1,0 +1,21 @@
+# Vercel ignore file - 保留所有重要文件
+
+# 只忽略开发依赖和缓存
+node_modules/
+.cache/
+cache/
+
+# 确保重要文件被包含
+!index.html
+!app.js
+!style.css
+!*.mp4
+!*.png
+!*.jpg
+!*.gif
+!contracts/
+!artifacts/
+!public/
+!scripts/
+!vercel.json
+!package.json
