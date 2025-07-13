@@ -1,0 +1,27 @@
+# Dependencies
+node_modules/
+package-lock.json
+yarn.lock
+
+# Build outputs
+artifacts/
+cache/
+coverage/
+typechain-types/
+dist/
+build/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Git
+.git/
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
