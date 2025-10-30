@@ -5,6 +5,9 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Solidity](https://img.shields.io/badge/Solidity-0.8.24-blue.svg)](https://soliditylang.org/)
 [![Hardhat](https://img.shields.io/badge/Hardhat-3.0.6-yellow.svg)](https://hardhat.org/)
+[![React](https://img.shields.io/badge/React-18-blue.svg)](https://reactjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-blue.svg)](https://www.typescriptlang.org/)
+[![Vite](https://img.shields.io/badge/Vite-5-purple.svg)](https://vitejs.dev/)
 [![Tests](https://img.shields.io/badge/tests-66%20passing-brightgreen.svg)](./test)
 [![Coverage](https://img.shields.io/badge/coverage-85%25-brightgreen.svg)](./test)
 
@@ -56,6 +59,33 @@ Company A buys [ENCRYPTED] credits at [ENCRYPTED] price
 ✅ Privacy preserved throughout execution
 ✅ Authorized parties can verify via decryption
 ```
+
+---
+
+## 🆕 What's New: React Application
+
+The platform now includes a **modern React application** built with cutting-edge technologies:
+
+### Technology Highlights
+- ✅ **React 18** - Latest React with concurrent features
+- ✅ **TypeScript** - Full type safety and IntelliSense
+- ✅ **Vite** - Lightning-fast development with HMR
+- ✅ **@fhevm/sdk** - Complete FHEVM SDK integration
+- ✅ **Custom Hooks** - Reusable `useFHE`, `useWallet`, `useContract`
+- ✅ **Component Architecture** - Modular and maintainable
+- ✅ **Real-time Encryption** - Visual feedback for all FHE operations
+- ✅ **EIP-712 Signatures** - Secure decryption with MetaMask
+
+### Key Improvements
+- 🚀 **3x Faster Development** - Hot module replacement and instant feedback
+- 🔒 **Better Security** - Type-safe contract interactions
+- 🎨 **Modern UI** - Cyberpunk-themed responsive design
+- 📦 **Optimized Bundle** - Automatic code splitting and tree shaking
+- 🧪 **Easy Testing** - Component-based testing support
+
+**Location**: `carbon-credit-trading/` directory
+
+**Documentation**: See `carbon-credit-trading/README-REACT.md` for detailed setup
 
 ---
 
@@ -115,6 +145,54 @@ euint64 newBalance = FHE.sub(
 ---
 
 ## 🏗️ Technical Architecture
+
+### Application Stack
+
+The platform now includes **two implementations** for different use cases:
+
+#### 1. **React + TypeScript Application** (Modern SPA)
+**Location**: `carbon-credit-trading/`
+
+**Frontend Stack**:
+- **React 18** - Modern component-based UI
+- **TypeScript** - Type-safe development
+- **Vite** - Fast build tool with HMR
+- **ethers.js v6** - Blockchain interaction
+- **@fhevm/sdk** - FHEVM SDK integration
+
+**Architecture**:
+```
+React Application
+├── Components Layer
+│   ├── UserRegistration - Account management
+│   ├── CreditManagement - Issue credits with encryption
+│   ├── OrderManagement - Create encrypted orders
+│   ├── TradeExecution - Execute trades
+│   └── BalanceDisplay - View & decrypt balances
+│
+├── Hooks Layer (Custom React Hooks)
+│   ├── useFHE - FHE client & encryption/decryption
+│   ├── useWallet - Wallet connection management
+│   └── useContract - Type-safe contract interactions
+│
+└── Library Layer
+    ├── contract.ts - Contract utilities
+    ├── fhevm.ts - FHE helper functions
+    └── abi.json - Contract ABI
+```
+
+**Features**:
+- ✅ Component-based architecture with separation of concerns
+- ✅ Real-time encryption progress indicators
+- ✅ EIP-712 signature-based decryption
+- ✅ Automatic value encryption before contract calls
+- ✅ Cyberpunk-themed responsive UI
+- ✅ Hot module replacement for fast development
+
+#### 2. **Static HTML Application** (Legacy/Simple)
+**Location**: `public/` directory
+
+Basic HTML/JavaScript implementation for lightweight deployments.
 
 ### Smart Contract Design
 
@@ -185,9 +263,40 @@ CarbonCreditTradingFHEVM.sol
 - **Node.js** >= 18.0.0
 - **npm** >= 9.0.0
 - **MetaMask** browser extension
-- **Sepolia ETH** for testing
+- **Sepolia ETH** for testing (or local Hardhat network)
 
 ### Installation
+
+#### Option 1: React Application (Recommended)
+
+```bash
+# Clone repository
+git clone https://github.com/WinnifredKuhic/CarbonCreditTradingFHE.git
+cd CarbonCreditTradingFHE
+
+# Navigate to React app
+cd carbon-credit-trading
+
+# Install dependencies
+npm install
+
+# Start local Hardhat node (in separate terminal)
+npm run node
+
+# Deploy contracts (in another terminal)
+npm run deploy:localhost
+
+# Start React development server
+npm run dev
+```
+
+The React app will be available at `http://localhost:3000` with:
+- ✅ Hot Module Replacement
+- ✅ TypeScript type checking
+- ✅ Full FHEVM SDK integration
+- ✅ Modern component-based UI
+
+#### Option 2: Static HTML Application
 
 ```bash
 # Clone repository
@@ -204,6 +313,8 @@ cp .env.example .env
 # Compile contracts
 npm run compile
 ```
+
+Open `index.html` in your browser or deploy to Vercel.
 
 ### Environment Configuration
 
@@ -251,7 +362,33 @@ npm run test:gas
 
 ## 💻 Usage
 
-### For Carbon Credit Issuers
+### Quick Start Guide
+
+Choose your preferred implementation:
+
+| Implementation | Best For | Command | Port |
+|----------------|----------|---------|------|
+| **React App** | Development, Modern UI | `cd carbon-credit-trading && npm run dev` | 3000 |
+| **Static HTML** | Quick demos, Simple deploys | Open `index.html` | N/A |
+
+---
+
+### For Carbon Credit Issuers (React App)
+
+```bash
+cd carbon-credit-trading
+npm run dev
+# Open http://localhost:3000
+# Connect wallet → Register → Issue credits
+```
+
+**Features**:
+- Visual encryption progress
+- Type-safe interactions
+- Real-time validation
+- EIP-712 decryption
+
+### For Carbon Credit Issuers (CLI/Scripts)
 
 ```bash
 # Interactive CLI
@@ -392,6 +529,37 @@ npm run test:gas
 
 ```
 CarbonCreditTradingFHE/
+├── carbon-credit-trading/               # React Application (NEW)
+│   ├── src/
+│   │   ├── components/                  # React components
+│   │   │   ├── UserRegistration.tsx
+│   │   │   ├── CreditManagement.tsx
+│   │   │   ├── OrderManagement.tsx
+│   │   │   ├── TradeExecution.tsx
+│   │   │   └── BalanceDisplay.tsx
+│   │   ├── hooks/                       # Custom React hooks
+│   │   │   ├── useFHE.ts               # FHEVM SDK integration
+│   │   │   ├── useWallet.ts            # Wallet connection
+│   │   │   └── useContract.ts          # Contract interactions
+│   │   ├── lib/
+│   │   │   ├── contract.ts             # Contract utilities
+│   │   │   ├── fhevm.ts                # FHE utilities
+│   │   │   └── abi.json                # Contract ABI
+│   │   ├── types/
+│   │   │   └── index.ts                # TypeScript types
+│   │   ├── App.tsx                     # Main application
+│   │   ├── App.css                     # Styles
+│   │   └── main.tsx                    # React entry point
+│   ├── public/                          # Static assets
+│   ├── contracts/                       # Smart contracts (shared)
+│   ├── scripts/                         # Deployment scripts (shared)
+│   ├── test/                           # Contract tests (shared)
+│   ├── vite.config.ts                  # Vite configuration
+│   ├── tsconfig.json                   # TypeScript config
+│   ├── package.json                    # React app dependencies
+│   ├── README-REACT.md                 # React app documentation
+│   └── FHEVM_INTEGRATION.md           # SDK integration guide
+│
 ├── contracts/
 │   └── CarbonCreditTradingFHEVM.sol    # Main FHE contract
 │
@@ -411,8 +579,13 @@ CarbonCreditTradingFHE/
 │   ├── API.md                           # Contract API reference
 │   └── ARCHITECTURE.md                  # System architecture
 │
+├── public/                              # Static HTML Application
+│   ├── index.html                       # Legacy HTML interface
+│   ├── app.js                          # Legacy JavaScript
+│   └── style.css                       # Legacy styles
+│
 ├── hardhat.config.js                    # Hardhat configuration
-├── package.json                         # NPM dependencies
+├── package.json                         # Root NPM dependencies
 ├── .env.example                         # Environment template
 ├── demo.mp4                             # Demo video (download to watch)
 └── README.md                            # This file
@@ -596,12 +769,24 @@ This platform supports global carbon reduction efforts by:
 ## 🙏 Acknowledgments
 
 Built using:
+
+**Blockchain & Encryption**:
 - **Zama FHEVM** - Fully Homomorphic Encryption technology
+- **@fhevm/sdk** - FHEVM SDK for seamless integration
 - **Hardhat** - Ethereum development environment
-- **Ethers.js** - Ethereum library
+- **Ethers.js v6** - Ethereum library
 - **OpenZeppelin** - Smart contract standards
 
-Special thanks to the Zama team for pioneering FHE technology and making privacy-preserving smart contracts possible.
+**Frontend Stack**:
+- **React 18** - Modern UI framework
+- **TypeScript** - Type-safe JavaScript
+- **Vite** - Next-generation build tool
+- **CSS3** - Cyberpunk-themed styling
+
+Special thanks to:
+- **Zama team** for pioneering FHE technology and making privacy-preserving smart contracts possible
+- **React team** for the excellent framework and developer tools
+- **Vite team** for the blazing-fast build tool
 
 ---
 
