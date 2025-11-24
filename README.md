@@ -1,14 +1,11 @@
-# Carbon Credit Trading Platform with FHE
+# EcoTradeGateway - Carbon Credit Trading Platform
 
-> Privacy-Preserving Carbon Credit Marketplace Using Fully Homomorphic Encryption
+> Privacy-Preserving Carbon Credit Marketplace with Gateway Callback Mode Using Fully Homomorphic Encryption
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Solidity](https://img.shields.io/badge/Solidity-0.8.24-blue.svg)](https://soliditylang.org/)
 [![Hardhat](https://img.shields.io/badge/Hardhat-3.0.6-yellow.svg)](https://hardhat.org/)
-[![React](https://img.shields.io/badge/React-18-blue.svg)](https://reactjs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5-blue.svg)](https://www.typescriptlang.org/)
-[![Vite](https://img.shields.io/badge/Vite-5-purple.svg)](https://vitejs.dev/)
-[![Tests](https://img.shields.io/badge/tests-66%20passing-brightgreen.svg)](./test)
+[![Tests](https://img.shields.io/badge/tests-passing-brightgreen.svg)](./test)
 [![Coverage](https://img.shields.io/badge/coverage-85%25-brightgreen.svg)](./test)
 
 ## 🌟 Overview
@@ -62,9 +59,37 @@ Company A buys [ENCRYPTED] credits at [ENCRYPTED] price
 
 ---
 
-## 🆕 What's New: React Application
+## 🆕 What's New: EcoTradeGateway Contract
 
-The platform now includes a **modern React application** built with cutting-edge technologies:
+The platform now includes an **advanced EcoTradeGateway contract** with production-ready features:
+
+### Advanced Features
+- ✅ **Gateway Callback Mode** - Asynchronous decryption processing with async/await pattern
+- ✅ **Refund Mechanism** - Automatic refunds for failed or expired decryption requests
+- ✅ **Timeout Protection** - 7-day timeout prevents permanent fund locking
+- ✅ **Privacy-Preserving Division** - Random multiplier masking for division operations
+- ✅ **Price Obfuscation** - Fuzzy pricing (80-120%) prevents price pattern analysis
+- ✅ **Rate Limiting** - 1 operation per second per address prevents DoS attacks
+- ✅ **Comprehensive Security** - Overflow protection, input validation, access control
+- ✅ **Complete Audit Trail** - Security event logging for all operations
+
+### Key Improvements Over Original
+
+| Feature | Original | EcoTradeGateway |
+|---------|----------|-----------------|
+| Processing | Synchronous | ✅ Async Gateway callbacks |
+| Refunds | None | ✅ Automatic refund system |
+| Timeout | No protection | ✅ 7-day timeout protection |
+| Rate Limiting | None | ✅ 1 op/second per address |
+| Price Obfuscation | Public | ✅ Fuzzy pricing (80-120%) |
+| Privacy Division | None | ✅ Random multiplicative masking |
+| Audit Trail | Basic | ✅ Complete security logging |
+
+See **[IMPLEMENTATION_SUMMARY.md](./docs/IMPLEMENTATION_SUMMARY.md)** for detailed feature breakdown.
+
+## 🎨 Legacy: React Application
+
+The platform also includes a **modern React application** built with cutting-edge technologies:
 
 ### Technology Highlights
 - ✅ **React 18** - Latest React with concurrent features
@@ -528,40 +553,26 @@ npm run test:gas
 ## 📁 Project Structure
 
 ```
-CarbonCreditTradingFHE/
-├── carbon-credit-trading/               # React Application (NEW)
-│   ├── src/
-│   │   ├── components/                  # React components
-│   │   │   ├── UserRegistration.tsx
-│   │   │   ├── CreditManagement.tsx
-│   │   │   ├── OrderManagement.tsx
-│   │   │   ├── TradeExecution.tsx
-│   │   │   └── BalanceDisplay.tsx
-│   │   ├── hooks/                       # Custom React hooks
-│   │   │   ├── useFHE.ts               # FHEVM SDK integration
-│   │   │   ├── useWallet.ts            # Wallet connection
-│   │   │   └── useContract.ts          # Contract interactions
-│   │   ├── lib/
-│   │   │   ├── contract.ts             # Contract utilities
-│   │   │   ├── fhevm.ts                # FHE utilities
-│   │   │   └── abi.json                # Contract ABI
-│   │   ├── types/
-│   │   │   └── index.ts                # TypeScript types
-│   │   ├── App.tsx                     # Main application
-│   │   ├── App.css                     # Styles
-│   │   └── main.tsx                    # React entry point
-│   ├── public/                          # Static assets
-│   ├── contracts/                       # Smart contracts (shared)
-│   ├── scripts/                         # Deployment scripts (shared)
-│   ├── test/                           # Contract tests (shared)
-│   ├── vite.config.ts                  # Vite configuration
-│   ├── tsconfig.json                   # TypeScript config
-│   ├── package.json                    # React app dependencies
-│   ├── README-REACT.md                 # React app documentation
-│   └── FHEVM_INTEGRATION.md           # SDK integration guide
-│
+EcoTradeGateway/
 ├── contracts/
-│   └── CarbonCreditTradingFHEVM.sol    # Main FHE contract
+│   ├── CarbonCreditTradingFHEVM.sol     # Original FHE contract
+│   └── EcoTradeGateway.sol              # NEW - Advanced implementation
+│       ├── Gateway callback mode        # Async decryption processing
+│       ├── Refund mechanism             # Handle decryption failures
+│       ├── Timeout protection           # Prevent fund locking
+│       ├── Privacy-preserving division  # Random multiplier protection
+│       ├── Price obfuscation            # Fuzzy pricing (80-120%)
+│       ├── Rate limiting                # DoS protection (1 op/sec)
+│       ├── Overflow protection          # Safe arithmetic
+│       └── Audit trail                  # Security logging
+│
+├── docs/
+│   ├── ARCHITECTURE.md                  # System design and Gateway pattern
+│   ├── API.md                           # Complete API reference
+│   ├── IMPLEMENTATION_SUMMARY.md        # Feature summary and checklist
+│   ├── DEPLOYMENT.md                    # Deployment guide and procedures
+│   ├── TESTING.md                       # Testing infrastructure
+│   └── SECURITY_PERFORMANCE.md          # Security audit and gas optimization
 │
 ├── scripts/
 │   ├── deploy.mjs                       # Deployment automation
@@ -570,14 +581,8 @@ CarbonCreditTradingFHE/
 │   └── simulate.mjs                     # Full workflow simulation
 │
 ├── test/
-│   ├── CarbonCreditTrading.test.mjs          # 60 unit tests
-│   └── CarbonCreditTrading.sepolia.test.mjs  # 6 integration tests
-│
-├── docs/
-│   ├── DEPLOYMENT.md                    # Deployment guide
-│   ├── TESTING.md                       # Testing documentation
-│   ├── API.md                           # Contract API reference
-│   └── ARCHITECTURE.md                  # System architecture
+│   ├── CarbonCreditTrading.test.mjs          # Unit tests
+│   └── CarbonCreditTrading.sepolia.test.mjs  # Integration tests
 │
 ├── public/                              # Static HTML Application
 │   ├── index.html                       # Legacy HTML interface
@@ -585,9 +590,8 @@ CarbonCreditTradingFHE/
 │   └── style.css                       # Legacy styles
 │
 ├── hardhat.config.js                    # Hardhat configuration
-├── package.json                         # Root NPM dependencies
+├── package.json                         # NPM dependencies
 ├── .env.example                         # Environment template
-├── demo.mp4                             # Demo video (download to watch)
 └── README.md                            # This file
 ```
 
